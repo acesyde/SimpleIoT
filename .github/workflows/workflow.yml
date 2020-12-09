@@ -8,16 +8,19 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-      - run: dotnet restore SimpleIoT.sln
-      - run: dotnet build SimpleIoT.sln
-      - run: dotnet test SimpleIoT.sln
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./tests/SimpleIoT.Api.Integration.Tests/coverage.opencover.xml
