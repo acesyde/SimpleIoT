@@ -1,0 +1,11 @@
+# https://pmarsceill.github.io/just-the-docs/
+remote_theme: pmarsceill/just-the-docs
+title: Simple IoT
+
+search_enabled: true
+heading_anchors: true
+
+footer_content: "Copyright &copy; 2020 Pierre-Emmanuel Mercier."
+aux_links:
+  "GitHub":
+    - "//github.com/acesyde/SimpleIoT"
