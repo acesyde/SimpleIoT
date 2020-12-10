@@ -5,7 +5,8 @@ using Xunit;
 
 namespace SimpleIoT.Api.Integration.Tests
 {
-    public class SwaggerTests : IClassFixture<FakeApplicationFactory<Startup>>
+    [Collection("integration")]
+    public class SwaggerTests
     {
         private readonly FakeApplicationFactory<Startup> _factory;
 

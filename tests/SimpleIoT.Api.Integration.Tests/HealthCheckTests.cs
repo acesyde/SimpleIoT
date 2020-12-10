@@ -5,7 +5,8 @@ using Xunit;
 
 namespace SimpleIoT.Api.Integration.Tests
 {
-    public class HealthCheckTests : IClassFixture<FakeApplicationFactory<Startup>>
+    [Collection("integration")]
+    public class HealthCheckTests
     {
         private readonly FakeApplicationFactory<Startup> _fakeApplicationFactory;
 

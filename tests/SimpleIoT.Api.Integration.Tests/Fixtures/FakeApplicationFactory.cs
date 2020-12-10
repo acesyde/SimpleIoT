@@ -59,5 +59,10 @@ namespace SimpleIoT.Api.Integration.Tests.Fixtures
             builder.UseContentRoot(".");
             base.ConfigureWebHost(builder);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            Server?.Dispose();
+        }
     }
 }
