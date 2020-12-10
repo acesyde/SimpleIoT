@@ -1,6 +1,6 @@
 ﻿namespace SimpleIoT.Grains.Shared.Entities
 {
-    public class SwitchState
+    public class SwitchState : State
     {
         public bool IsOn { get; set; }
         public float CurrentPower { get; set; }

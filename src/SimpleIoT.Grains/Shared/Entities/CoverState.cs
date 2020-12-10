@@ -2,7 +2,7 @@
 
 namespace SimpleIoT.Grains.Shared.Entities
 {
-    public class CoverState
+    public class CoverState : State
     {
         [Range(0, 100)]
         public int Position { get; set; }

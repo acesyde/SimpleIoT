@@ -2,7 +2,7 @@
 
 namespace SimpleIoT.Grains.Shared.Entities
 {
-    public class LightState
+    public class LightState : State
     {
         [Range(0, 255)]
         public int Brightness { get; set; }

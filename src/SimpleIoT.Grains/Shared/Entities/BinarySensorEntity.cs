@@ -1,10 +1,11 @@
-﻿using Orleans;
-using SimpleIoT.Grains.Interfaces;
+﻿using Microsoft.Extensions.Logging;
 
 namespace SimpleIoT.Grains.Shared.Entities
 {
-    public class BinarySensorEntity : Grain<BinarySensorState>, IEntityGrain
+    public class BinarySensorEntity : EntityGrain<BinarySensorState>
     {
-
+        public BinarySensorEntity(ILogger<BinarySensorEntity> logger) : base(logger)
+        {
+        }
     }
 }
