@@ -7,6 +7,10 @@ namespace SimpleIoT.Grains.Interfaces
     {
         Task InitiazeAsync();
 
+        Task EnableAsync();
+
+        Task DisableAsync();
+
         Task AddDeviceAsync(IDeviceGrain device);
 
         Task<string[]> GetDevicesAsync();

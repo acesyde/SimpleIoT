@@ -10,10 +10,24 @@ namespace SimpleIoT.Grains.Hue
 {
     public sealed class HueIntegration : IntegrationGrain
     {
+        public bool IsActive { get; private set; }
         public Dictionary<Guid,IDeviceGrain> Bridges { get; } = new Dictionary<Guid, IDeviceGrain>();
+        
 
         public override Task InitiazeAsync()
         {
+            return Task.CompletedTask;
+        }
+
+        public override Task EnableAsync()
+        {
+            IsActive = true;
+            return Task.CompletedTask;
+        }
+
+        public override Task DisableAsync()
+        {
+            IsActive = false;
             return Task.CompletedTask;
         }
 

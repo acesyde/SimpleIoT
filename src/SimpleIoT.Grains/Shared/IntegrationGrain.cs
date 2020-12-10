@@ -7,6 +7,8 @@ namespace SimpleIoT.Grains.Shared
     public abstract class IntegrationGrain : Grain, IIntegrationGrain
     {
         public abstract Task InitiazeAsync();
+        public abstract Task EnableAsync();
+        public abstract Task DisableAsync();
         public abstract Task AddDeviceAsync(IDeviceGrain device);
         public abstract Task<string[]> GetDevicesAsync();
     }
