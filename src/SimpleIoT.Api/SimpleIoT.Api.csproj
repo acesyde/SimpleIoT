@@ -8,7 +8,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.3.0" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.3.0" />
+    <PackageReference Include="Opw.HttpExceptions.AspNetCore" Version="2.8.0" />
+    <PackageReference Include="OrleansDashboard" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
