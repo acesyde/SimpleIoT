@@ -2,7 +2,7 @@
 using Orleans;
 using SimpleIoT.Grains.Interfaces;
 
-namespace SimpleIoT.Grains
+namespace SimpleIoT.Grains.Shared
 {
     public abstract class IntegrationGrain : Grain, IIntegrationGrain
     {

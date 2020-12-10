@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Orleans;
 using SimpleIoT.Grains.Interfaces;
+using SimpleIoT.Grains.Shared;
 
 namespace SimpleIoT.Grains.Hue
 {
