@@ -1,6 +1,8 @@
 using System;
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +27,11 @@ namespace SimpleIoT.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks();
-            services.AddControllers().AddHttpExceptions(ConfigureHttpExceptions);
+            services.AddControllers(options =>
+                {
+                    options.OutputFormatters.RemoveType<StringOutputFormatter>();
+                })
+                .AddHttpExceptions(ConfigureHttpExceptions);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleIoT.Api", Version = "v1" });
