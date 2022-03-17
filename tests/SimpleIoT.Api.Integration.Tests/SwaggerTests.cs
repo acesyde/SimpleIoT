@@ -8,9 +8,9 @@ namespace SimpleIoT.Api.Integration.Tests;
 [Collection("integration")]
 public class SwaggerTests
 {
-    private readonly FakeApplicationFactory<Startup> _factory;
+    private readonly FakeApplicationFactory _factory;
 
-    public SwaggerTests(FakeApplicationFactory<Startup> factory)
+    public SwaggerTests(FakeApplicationFactory factory)
     {
         _factory = factory;
     }

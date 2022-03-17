@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -10,54 +9,37 @@ using SimpleIoT.Grains;
 
 namespace SimpleIoT.Api.Integration.Tests.Fixtures;
 
-public class FakeApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+public sealed class FakeApplicationFactory : WebApplicationFactory<Program>
 {
-    protected override IHostBuilder CreateHostBuilder()
-    {
-        return Host.CreateDefaultBuilder()
-            .UseEnvironment("Development")
-            .ConfigureWebHost(webHost =>
-            {
-                webHost.UseStartup<TStartup>();
-            })
-            .UseOrleans(builder =>
-            {
-                builder.UseLocalhostClustering();
-                builder.Configure<ClusterOptions>(options =>
-                {
-                    options.ClusterId = "dev";
-                    options.ServiceId = "SimpleIoT";
-                });
-                builder.Configure<EndpointOptions>(options =>
-                {
-                    options.AdvertisedIPAddress = IPAddress.Loopback;
-                });
-                builder.UseInMemoryReminderService();
-                builder.AddSimpleMessageStreamProvider("sms");
-                builder.ConfigureApplicationParts(manager =>
-                {
-                    manager.AddApplicationPart(GrainModule.Assembly).WithReferences();
-                });
-                builder.ConfigureServices((context, collection) =>
-                {
-
-                });
-                builder.ConfigureLogging(loggingBuilder =>
-                {
-                    loggingBuilder.AddConsole();
-                });
-                builder.UseDashboard(options =>
-                {
-                    options.HideTrace = true;
-                    options.HostSelf = false;
-                });
-            });
-    }
-
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseContentRoot(".");
-        base.ConfigureWebHost(builder);
+        builder.UseEnvironment("Development");
+        builder.UseOrleans(siloBuilder =>
+        {
+            siloBuilder.UseLocalhostClustering();
+            siloBuilder.Configure<ClusterOptions>(options =>
+            {
+                options.ClusterId = "dev";
+                options.ServiceId = "SimpleIoT";
+            });
+            siloBuilder.Configure<EndpointOptions>(options =>
+            {
+                options.AdvertisedIPAddress = IPAddress.Loopback;
+            });
+            siloBuilder.UseInMemoryReminderService();
+            siloBuilder.AddSimpleMessageStreamProvider("sms");
+            siloBuilder.ConfigureApplicationParts(manager =>
+            {
+                manager.AddApplicationPart(GrainModule.Assembly).WithReferences();
+            });
+            siloBuilder.UseDashboard(options =>
+            {
+                options.HideTrace = true;
+                options.HostSelf = false;
+            });
+        });
+        return base.CreateHost(builder);
     }
 
     protected override void Dispose(bool disposing)

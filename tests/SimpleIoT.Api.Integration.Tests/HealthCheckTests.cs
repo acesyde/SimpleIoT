@@ -8,9 +8,9 @@ namespace SimpleIoT.Api.Integration.Tests;
 [Collection("integration")]
 public class HealthCheckTests
 {
-    private readonly FakeApplicationFactory<Startup> _fakeApplicationFactory;
+    private readonly FakeApplicationFactory _fakeApplicationFactory;
 
-    public HealthCheckTests(FakeApplicationFactory<Startup> fakeApplicationFactory)
+    public HealthCheckTests(FakeApplicationFactory fakeApplicationFactory)
     {
         _fakeApplicationFactory = fakeApplicationFactory;
     }

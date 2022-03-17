@@ -1,59 +1,63 @@
 using System.Net;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using OrleansDashboard;
 using SimpleIoT.Grains;
 
-namespace SimpleIoT.Api;
+var builder = WebApplication.CreateBuilder();
 
-public static class Program
+builder.Host.UseOrleans(siloBuilder =>
 {
-    public static void Main(string[] args)
+    siloBuilder.UseLocalhostClustering();
+    siloBuilder.Configure<ClusterOptions>(options =>
     {
-        CreateHostBuilder(args)
-            .Build()
-            .Run();
-    }
+        options.ClusterId = "dev";
+        options.ServiceId = "SimpleIoT";
+    });
+    siloBuilder.Configure<EndpointOptions>(options => { options.AdvertisedIPAddress = IPAddress.Loopback; });
+    siloBuilder.UseInMemoryReminderService();
+    siloBuilder.AddSimpleMessageStreamProvider("sms");
+    siloBuilder.ConfigureApplicationParts(manager =>
+    {
+        manager.AddApplicationPart(GrainModule.Assembly).WithReferences();
+    });
+    siloBuilder.UseDashboard(options =>
+    {
+        options.HideTrace = true;
+        options.HostSelf = false;
+    });
+});
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            })
-            .UseOrleans(builder =>
-            {
-                builder.UseLocalhostClustering();
-                builder.Configure<ClusterOptions>(options =>
-                {
-                    options.ClusterId = "dev";
-                    options.ServiceId = "SimpleIoT";
-                });
-                builder.Configure<EndpointOptions>(options =>
-                {
-                    options.AdvertisedIPAddress = IPAddress.Loopback;
-                });
-                builder.UseInMemoryReminderService();
-                builder.AddSimpleMessageStreamProvider("sms");
-                builder.ConfigureApplicationParts(manager =>
-                {
-                    manager.AddApplicationPart(GrainModule.Assembly).WithReferences();
-                });
-                builder.ConfigureServices((context, collection) =>
-                {
+builder.Services.AddHealthChecks();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-                });
-                builder.ConfigureLogging(loggingBuilder =>
-                {
-                    loggingBuilder.AddConsole();
-                });
-                builder.UseDashboard(options =>
-                {
-                    options.HideTrace = true;
-                    options.HostSelf = false;
-                });
-            });
+var app = builder.Build();
+
+if (builder.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleIoT.Api v1"));
 }
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapHealthChecks("/health");
+app.UseOrleansDashboard(new DashboardOptions
+{
+    HideTrace = true,
+    BasePath = "/dashboard"
+});
+
+app.Run();
+
+public partial class Program {}
