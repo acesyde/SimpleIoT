@@ -1,4 +1,6 @@
 using System.Net;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +12,7 @@ using SimpleIoT.Grains;
 
 var builder = WebApplication.CreateBuilder();
 
-builder.Host.UseOrleans(siloBuilder =>
+builder.Services.AddOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
     siloBuilder.Configure<ClusterOptions>(options =>
@@ -20,43 +22,34 @@ builder.Host.UseOrleans(siloBuilder =>
     });
     siloBuilder.Configure<EndpointOptions>(options => { options.AdvertisedIPAddress = IPAddress.Loopback; });
     siloBuilder.UseInMemoryReminderService();
-    siloBuilder.AddSimpleMessageStreamProvider("sms");
-    siloBuilder.ConfigureApplicationParts(manager =>
-    {
-        manager.AddApplicationPart(GrainModule.Assembly).WithReferences();
-    });
-    siloBuilder.UseDashboard(options =>
-    {
-        options.HideTrace = true;
-        options.HostSelf = false;
-    });
+    // siloBuilder.UseDashboard(options =>
+    // {
+    //     options.HideTrace = true;
+    //     options.HostSelf = false;
+    // });
 });
 
 builder.Services.AddHealthChecks();
-builder.Services.AddControllers();
+builder.Services.AddFastEndpoints();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDoc();
 
 var app = builder.Build();
-
-if (builder.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleIoT.Api v1"));
-}
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseFastEndpoints();
+app.UseOpenApi();
+app.UseSwaggerUi3(s => s.ConfigureDefaults());
 
-app.MapControllers();
 app.MapHealthChecks("/health");
-app.UseOrleansDashboard(new DashboardOptions
-{
-    HideTrace = true,
-    BasePath = "/dashboard"
-});
+// app.UseOrleansDashboard(new DashboardOptions
+// {
+//     HideTrace = true,
+//     BasePath = "/dashboard"
+// });
 
 app.Run();
 
