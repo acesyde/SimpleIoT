@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 
-namespace SimpleIoT.Grains
+namespace SimpleIoT.Grains;
+
+public static class GrainModule
 {
-    public static class GrainModule
-    {
-        public static Assembly Assembly => typeof(GrainModule).Assembly;
-    }
+    public static Assembly Assembly => typeof(GrainModule).Assembly;
 }

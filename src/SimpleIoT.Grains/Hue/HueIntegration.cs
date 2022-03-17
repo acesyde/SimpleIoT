@@ -6,32 +6,31 @@ using Orleans;
 using SimpleIoT.Grains.Interfaces;
 using SimpleIoT.Grains.Shared;
 
-namespace SimpleIoT.Grains.Hue
+namespace SimpleIoT.Grains.Hue;
+
+public sealed class HueIntegration : IntegrationGrain
 {
-    public sealed class HueIntegration : IntegrationGrain
+    public Dictionary<Guid, IDeviceGrain> Bridges { get; } = new Dictionary<Guid, IDeviceGrain>();
+
+    public override Task InitiazeAsync()
     {
-        public Dictionary<Guid,IDeviceGrain> Bridges { get; } = new Dictionary<Guid, IDeviceGrain>();
+        return Task.CompletedTask;
+    }
 
-        public override Task InitiazeAsync()
+    public override Task AddDeviceAsync(IDeviceGrain device)
+    {
+        var key = device.GetPrimaryKey();
+
+        if (!Bridges.ContainsKey(key))
         {
-            return Task.CompletedTask;
+            Bridges.Add(key, device);
         }
 
-        public override Task AddDeviceAsync(IDeviceGrain device)
-        {
-            var key = device.GetPrimaryKey();
+        return Task.CompletedTask;
+    }
 
-            if (!Bridges.ContainsKey(key))
-            {
-                Bridges.Add(key, device);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public override Task<string[]> GetDevicesAsync()
-        {
-            return Task.FromResult(Bridges.Values.Select(m => m.GetPrimaryKey().ToString()).ToArray());
-        }
+    public override Task<string[]> GetDevicesAsync()
+    {
+        return Task.FromResult(Bridges.Values.Select(m => m.GetPrimaryKey().ToString()).ToArray());
     }
 }

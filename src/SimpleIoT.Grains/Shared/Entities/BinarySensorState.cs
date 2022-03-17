@@ -1,7 +1,6 @@
-﻿namespace SimpleIoT.Grains.Shared.Entities
+﻿namespace SimpleIoT.Grains.Shared.Entities;
+
+public class BinarySensorState
 {
-    public class BinarySensorState
-    {
-        public bool IsOn { get; set; }
-    }
+    public bool IsOn { get; set; }
 }

@@ -2,12 +2,11 @@
 using Orleans;
 using SimpleIoT.Grains.Interfaces;
 
-namespace SimpleIoT.Grains.Shared
+namespace SimpleIoT.Grains.Shared;
+
+public abstract class IntegrationGrain : Grain, IIntegrationGrain
 {
-    public abstract class IntegrationGrain : Grain, IIntegrationGrain
-    {
-        public abstract Task InitiazeAsync();
-        public abstract Task AddDeviceAsync(IDeviceGrain device);
-        public abstract Task<string[]> GetDevicesAsync();
-    }
+    public abstract Task InitiazeAsync();
+    public abstract Task AddDeviceAsync(IDeviceGrain device);
+    public abstract Task<string[]> GetDevicesAsync();
 }

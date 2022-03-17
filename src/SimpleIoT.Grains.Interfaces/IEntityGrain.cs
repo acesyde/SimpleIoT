@@ -1,8 +1,7 @@
 ﻿using Orleans;
 
-namespace SimpleIoT.Grains.Interfaces
+namespace SimpleIoT.Grains.Interfaces;
+
+public interface IEntityGrain : IGrainWithGuidKey
 {
-    public interface IEntityGrain : IGrainWithGuidKey
-    {
-    }
 }

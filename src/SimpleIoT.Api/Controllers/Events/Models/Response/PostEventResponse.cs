@@ -1,7 +1,6 @@
-﻿namespace SimpleIoT.Api.Controllers.Events.Models.Response
+﻿namespace SimpleIoT.Api.Controllers.Events.Models.Response;
+
+public class PostEventResponse
 {
-    public class PostEventResponse
-    {
-        public string Message { get; set; }
-    }
+    public string Message { get; set; }
 }

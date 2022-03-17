@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 
-namespace SimpleIoT.Grains.Interfaces
+namespace SimpleIoT.Grains.Interfaces;
+
+public interface IIntegrationGrain : IGrainWithGuidKey
 {
-    public interface IIntegrationGrain : IGrainWithGuidKey
-    {
-        Task InitiazeAsync();
+    Task InitiazeAsync();
 
-        Task AddDeviceAsync(IDeviceGrain device);
+    Task AddDeviceAsync(IDeviceGrain device);
 
-        Task<string[]> GetDevicesAsync();
-    }
+    Task<string[]> GetDevicesAsync();
 }

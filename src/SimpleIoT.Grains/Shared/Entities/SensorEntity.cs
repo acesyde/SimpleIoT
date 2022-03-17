@@ -1,9 +1,8 @@
 ﻿using Orleans;
 using SimpleIoT.Grains.Interfaces;
 
-namespace SimpleIoT.Grains.Shared.Entities
+namespace SimpleIoT.Grains.Shared.Entities;
+
+public class SensorEntity : Grain<SensorState>, IEntityGrain
 {
-    public class SensorEntity : Grain<SensorState>, IEntityGrain
-    {
-    }
 }
