@@ -12,7 +12,7 @@ using SimpleIoT.Grains;
 
 var builder = WebApplication.CreateBuilder();
 
-builder.Services.AddOrleans(siloBuilder =>
+builder.Host.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
     siloBuilder.Configure<ClusterOptions>(options =>
@@ -22,11 +22,6 @@ builder.Services.AddOrleans(siloBuilder =>
     });
     siloBuilder.Configure<EndpointOptions>(options => { options.AdvertisedIPAddress = IPAddress.Loopback; });
     siloBuilder.UseInMemoryReminderService();
-    // siloBuilder.UseDashboard(options =>
-    // {
-    //     options.HideTrace = true;
-    //     options.HostSelf = false;
-    // });
 });
 
 builder.Services.AddHealthChecks();
@@ -45,11 +40,6 @@ app.UseOpenApi();
 app.UseSwaggerUi3(s => s.ConfigureDefaults());
 
 app.MapHealthChecks("/health");
-// app.UseOrleansDashboard(new DashboardOptions
-// {
-//     HideTrace = true,
-//     BasePath = "/dashboard"
-// });
 
 app.Run();
 

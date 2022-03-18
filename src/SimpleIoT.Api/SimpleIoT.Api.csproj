@@ -11,8 +11,7 @@
     <PackageReference Include="FastEndpoints.Validation" Version="3.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.3" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="4.0.0-preview1" />
-    <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="4.0.0-preview1" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.6.0" />
     <PackageReference Include="OrleansDashboard" Version="3.6.1" />
   </ItemGroup>
   <ItemGroup>
